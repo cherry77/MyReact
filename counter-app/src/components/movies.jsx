@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {getMovies} from './../services/fakeMovieService'
+import {getGenres} from './../services/fakeGenreService'
 import Like from './common/like'
+import ListGroup from './common/listgroup'
 import Pagination from "./common/pagination"
 import {paginate} from './../utils/pagination'
 
@@ -9,15 +11,19 @@ class Movies extends Component {
         super(props);
         this.state = {
             movies: [],
+            genres: [],
+            selectedGenre: {},
             pageSize: 4,
             currentPage: 1
         }
     }
 
     componentDidMount() {
-        const movies = getMovies();
+        //增加all genre组
+        const genres = [{name: 'All genres'}, ...getGenres()];
         this.setState({
-            movies
+            movies: getMovies(),
+            genres: genres
         })
     }
 
@@ -38,15 +44,29 @@ class Movies extends Component {
         this.setState({currentPage: page});
     };
 
+    handleGenreSelect = genre => {
+        this.setState({selectedGenre: genre, currentPage: 1})
+    };
+
     render() {
         const {length: count} = this.state.movies;
+        const {pageSize, currentPage, movies: allMovies, selectedGenre} = this.state;
         if (count === 0) return <h3>There are no movies in the database.</h3>
-        const {pageSize, currentPage, movies: allMovies} = this.state;
-        const movies = paginate(allMovies, currentPage, pageSize);
+
+        const filtered = selectedGenre && selectedGenre._id?
+            allMovies.filter(m => m.genre._id === selectedGenre._id):
+            allMovies;
+        const movies = paginate(filtered, currentPage, pageSize);
         return (
-            <React.Fragment>
-                <div className="container">
-                    <h3>There are {count} movies in the database.</h3>
+            <div className="row">
+                <div className="col-2">
+                    <ListGroup
+                        items={this.state.genres}
+                        selectedItem={this.state.selectedGenre}
+                        onItemSelect={this.handleGenreSelect}/>
+                </div>
+                <div className="col">
+                    <h3>There are {filtered.length} movies in the database.</h3>
                     <table className="table table-sm">
                         <thead>
                         <tr>
@@ -75,12 +95,13 @@ class Movies extends Component {
                         ))}
                         </tbody>
                     </table>
-                    <Pagination itemCounts={count}
-                                pageSize={pageSize}
-                                currentPage={currentPage}
-                                onPageChange={this.handlePageChange}/>
+                    <Pagination
+                        itemCounts={filtered.length}
+                        pageSize={pageSize}
+                        currentPage={currentPage}
+                        onPageChange={this.handlePageChange}/>
                 </div>
-            </React.Fragment>
+            </div>
         )
     }
 }
