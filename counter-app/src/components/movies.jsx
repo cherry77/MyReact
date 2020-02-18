@@ -5,6 +5,7 @@ import ListGroup from './common/listgroup'
 import Pagination from "./common/pagination"
 import {paginate} from './../utils/pagination'
 import MoviesTable from './moviesTable'
+import _ from 'lodash'
 
 class Movies extends Component {
     constructor(props) {
@@ -14,13 +15,14 @@ class Movies extends Component {
             genres: [],
             selectedGenre: {},
             pageSize: 4,
-            currentPage: 1
+            currentPage: 1,
+            sortColumn: {path: 'title', order: 'asc'}
         }
     }
 
     componentDidMount() {
         //增加all genre组
-        const genres = [{name: 'All genres'}, ...getGenres()];
+        const genres = [{_id: '', name: 'All genres'}, ...getGenres()];
         this.setState({
             movies: getMovies(),
             genres: genres
@@ -48,15 +50,28 @@ class Movies extends Component {
         this.setState({selectedGenre: genre, currentPage: 1})
     };
 
+    handleSort = sortColumn => {
+        this.setState({sortColumn})
+    };
+
     render() {
         const {length: count} = this.state.movies;
-        const {pageSize, currentPage, movies: allMovies, selectedGenre} = this.state;
+        const {
+            pageSize,
+            currentPage,
+            movies: allMovies,
+            selectedGenre,
+            sortColumn
+        } = this.state;
         if (count === 0) return <h3>There are no movies in the database.</h3>
-
+        // 筛选
         const filtered = selectedGenre && selectedGenre._id?
             allMovies.filter(m => m.genre._id === selectedGenre._id):
             allMovies;
-        const movies = paginate(filtered, currentPage, pageSize);
+        //排序
+        const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+        //分页
+        const movies = paginate(sorted, currentPage, pageSize);
         return (
             <div className="row">
                 <div className="col-2">
@@ -69,8 +84,10 @@ class Movies extends Component {
                     <h3>There are {filtered.length} movies in the database.</h3>
                     <MoviesTable
                         movies={movies}
+                        sortColumn={sortColumn}
                         onLike={this.handleLike}
-                        onDelete={this.handleDelete}/>
+                        onDelete={this.handleDelete}
+                        onSort={this.handleSort}/>
                     <Pagination
                         itemCounts={filtered.length}
                         pageSize={pageSize}
