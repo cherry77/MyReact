@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './App.css';
 import NavBar from './components/navbar'
 import Counters from './components/counters'
-// import Movies from './components/movies'
 
 class App extends Component {
     state = {
