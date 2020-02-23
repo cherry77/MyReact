@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Input from './common/input'
+import Joi from 'joi-browser'
 
 class LoginForm extends Component {
     constructor(props) {
@@ -9,32 +10,35 @@ class LoginForm extends Component {
             errors: {}
         }
     }
+
+    //定义schema
+    schema = {
+        username: Joi.string().required().label('Username'),
+        password: Joi.string().required().label('Password')
+    };
+
     validateProperty = ({name, value}) => {
-        if(name === 'username'){
-            if(value.trim() === '')
-                return 'Username is required.';
-        }
-        if(name === 'password'){
-            if(value.trim() === '')
-                return 'Password is required.';
-        }
+        const obj = {[name]: value};
+        const schema = {[name]: this.schema[name]};
+        const {error} = Joi.validate(obj,schema);
+        return error ? error.details[0].message: null;
     };
     validate = () => {
-        const errors = {};
-        const {account} = this.state;
+        const option = {abortEarly: false};
+        const {error} = Joi.validate(this.state.account, this.schema, option);
+        if (!error) return null;
 
-        if(account.username.trim() === '')
-            errors.username = 'Username is required.';
-        if(account.password.trim() === '')
-            errors.password = 'Password is required.';
+        const errors = {};
+        for (let item of error.details) errors[item.path[0]] = item.message;
         return errors;
+
     };
     handleChange = ({currentTarget: input}) => {
         //validate property
         const errors = {...this.state.errors};
         const errorMessage = this.validateProperty(input);
 
-        if(errorMessage) errors[input.name] = errorMessage;
+        if (errorMessage) errors[input.name] = errorMessage;
         else delete errors[input.name];
 
         const account = {...this.state.account};
@@ -46,8 +50,8 @@ class LoginForm extends Component {
         e.preventDefault();
         const account = {...this.state.account};
         const errors = this.validate();
-        this.setState({errors});
-        if(errors) return;
+        this.setState({errors: errors || {}});
+        if (errors) return;
     };
 
     render() {
