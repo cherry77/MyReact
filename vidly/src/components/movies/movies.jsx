@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {getMovies} from './../../services/fakeMovieService'
 import {getGenres} from './../../services/fakeGenreService'
 import ListGroup from './../common/listgroup'
+import SearchBox from './../common/searchBox'
 import Pagination from "./../common/pagination"
 import {paginate} from './../../utils/pagination'
 import MoviesTable from './moviesTable'
@@ -14,10 +15,11 @@ class Movies extends Component {
         this.state = {
             movies: [],
             genres: [],
+            searchQuery: '',
             selectedGenre: {},
             pageSize: 4,
             currentPage: 1,
-            sortColumn: {path: 'title', order: 'asc'}
+            sortColumn: {path: 'title', order: 'asc'},
         }
     }
 
@@ -48,7 +50,11 @@ class Movies extends Component {
     };
 
     handleGenreSelect = genre => {
-        this.setState({selectedGenre: genre, currentPage: 1})
+        this.setState({selectedGenre: genre, searchQuery: '', currentPage: 1})
+    };
+
+    handleSearch = query => {
+        this.setState({searchQuery: query, selectedGenre: {}, currentPage: 1});
     };
 
     handleSort = sortColumn => {
@@ -61,12 +67,20 @@ class Movies extends Component {
             currentPage,
             movies: allMovies,
             selectedGenre,
-            sortColumn
+            sortColumn,
+            searchQuery
         } = this.state;
         // 筛选
-        const filtered = selectedGenre && selectedGenre._id ?
-            allMovies.filter(m => m.genre._id === selectedGenre._id) :
-            allMovies;
+        let filtered = allMovies;
+        // 关键字搜索筛选
+        if(searchQuery)
+            filtered = allMovies.filter(m =>
+                m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+            );
+        else if(selectedGenre && selectedGenre._id) //分类筛选
+            filtered = allMovies.filter(m =>
+                m.genre._id === selectedGenre._id);
+
         //排序
         const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
         //分页
@@ -78,7 +92,7 @@ class Movies extends Component {
         const {length: count} = this.state.movies;
         if (count === 0) return <h3>There are no movies in the database.</h3>
 
-        const {pageSize, currentPage, sortColumn} = this.state;
+        const {pageSize, currentPage, sortColumn, searchQuery} = this.state;
         const {totalCount, data: movies} = this.getPageData();
 
         return (
@@ -91,7 +105,8 @@ class Movies extends Component {
                 </div>
                 <div className="col">
                     <Link className="btn btn-primary" to="/movies/new">New movie</Link>
-                    <h3>There are {totalCount} movies in the database.</h3>
+                    <h5>There are {totalCount} movies in the database.</h5>
+                    <SearchBox value={searchQuery} onChange={this.handleSearch}/>
                     <MoviesTable
                         movies={movies}
                         sortColumn={sortColumn}
