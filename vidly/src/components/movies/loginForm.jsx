@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
+import React from 'react'
 import Joi from 'joi-browser'
-import Form from './common/form'
+import Form from './../common/form'
 
 class LoginForm extends Form {
     constructor(props) {
@@ -22,7 +22,6 @@ class LoginForm extends Form {
     };
 
     render() {
-        const {data, errors} = this.state;
         return (
             <div>
                 <h1>Login</h1>

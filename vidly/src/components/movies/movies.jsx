@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {getMovies} from './../services/fakeMovieService'
-import {getGenres} from './../services/fakeGenreService'
-import ListGroup from './common/listgroup'
-import Pagination from "./common/pagination"
-import {paginate} from './../utils/pagination'
+import {Link} from 'react-router-dom'
+import {getMovies} from './../../services/fakeMovieService'
+import {getGenres} from './../../services/fakeGenreService'
+import ListGroup from './../common/listgroup'
+import Pagination from "./../common/pagination"
+import {paginate} from './../../utils/pagination'
 import MoviesTable from './moviesTable'
 import _ from 'lodash'
 
@@ -89,6 +90,7 @@ class Movies extends Component {
                         onItemSelect={this.handleGenreSelect}/>
                 </div>
                 <div className="col">
+                    <Link className="btn btn-primary" to="/movies/new">New movie</Link>
                     <h3>There are {totalCount} movies in the database.</h3>
                     <MoviesTable
                         movies={movies}
