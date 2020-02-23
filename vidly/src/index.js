@@ -7,11 +7,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 
 // import App from './App';
-import Movie from './Movie'
+// import Movie from './Movie'
+import HttpApp from './HttpApp'
 
 ReactDOM.render(
     <BrowserRouter>
-        <Movie />
+        <HttpApp />
     </BrowserRouter>,
     document.getElementById('root')
 );
