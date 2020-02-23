@@ -50,10 +50,6 @@ class Form extends Component{
         this.doSubmit();
     };
 
-    doSubmit = () =>{
-        console.log('Submitted');
-    };
-
     renderButton = label => {
         return (
             <button className="btn btn-primary"
