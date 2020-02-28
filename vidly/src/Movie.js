@@ -21,7 +21,6 @@ class Movie extends Component{
         this.setState({user});
     }
     render () {
-        const {user} = this.state;
         return (
             <React.Fragment>
                 <ToastContainer/>
