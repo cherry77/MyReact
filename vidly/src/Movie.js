@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Route, Switch, Redirect} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
+import ProtectedRoute from './components/common/protectedRoute'
 import MNavBar from './components/movies/mnavbar'
 import Movies from './components/movies/movies'
 import MovieForm from './components/movies/movieForm'
@@ -20,6 +21,7 @@ class Movie extends Component{
         this.setState({user});
     }
     render () {
+        const {user} = this.state;
         return (
             <React.Fragment>
                 <ToastContainer/>
@@ -29,9 +31,10 @@ class Movie extends Component{
                         <Route path="/login" component={LoginForm}/>
                         <Route path="/register" component={RegisterForm}/>
                         <Route path="/logout" component={Logout}/>
-                        <Route path="/movies/new" component={MovieForm}/>
-                        <Route path="/movies/:id" component={MovieForm}/>
-                        <Route path="/movies" component={Movies}/>
+                        <ProtectedRoute path="/movies/:id" component={MovieForm}/>
+                        <Route
+                            path="/movies"
+                            render={props => <Movies {...props} user={this.state.user}/>}/>
                         <Route path="/customers" component={Customers}/>
                         <Route path="/rentals" component={Rentals}/>
                         <Route path="/not-found" component={NotFound}/>
