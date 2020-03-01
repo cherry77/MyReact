@@ -5,11 +5,12 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
+import 'bootstrap/dist/js/bootstrap'
 
 // import App from './CounterApp';
 // import App from './MovieApp'
 // import App from './HttpApp'
-import App from './DashboardApp'
+import App from './dashboard/App'
 
 
 console.log("SUPERMAN",process.env.REACT_APP_NAME);//这个链接到环境中的变量在运行时被替换为真实值了
