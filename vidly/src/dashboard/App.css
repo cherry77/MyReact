@@ -298,8 +298,6 @@
   .dropdown, .dropleft, .dropright, .dropup {
     position: inherit;
   }
-}
-@media (max-width: 575.98px){
   .navbar-expand .navbar-nav .dropdown-menu-lg {
     min-width: 100%;
   }

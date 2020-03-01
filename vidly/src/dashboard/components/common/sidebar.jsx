@@ -1,99 +1,77 @@
-import React from 'react'
-import menus from './../../config/menuConfig'
+import React, {Component} from 'react'
+import menuList from './../../config/menuConfig'
 
-const Sidebar = ({toggled}) => {
-    return (
-        <nav className={toggled?"sidebar": "sidebar toggled"}>
-            <div className="sidebar-content">
-                <a href="/" className="sidebar-brand">
-                    <i className="fa fa-home"></i>
-                    <span className="align-middle">Spark</span>
-                </a>
-            </div>
-            <div className="sidebar-user">
-                <img src="/logo192.png"
-                     className="img-fluid rounded-circle mb-2" alt="Linda Miller" />
-                <div className="font-weight-bold">Linda Miller</div>
-                <small>Front-end Developer</small>
-            </div>
-            <ul className="sidebar-nav">
-                <li className="sidebar-header">Main</li>
-                <li className="sidebar-item">
-                    <a href="/dashboard" className="sidebar-link">
+class Sidebar extends Component {
+    renderMenuList = (menuList) => {
+        return menuList.map(item => {
+            return (
+                <React.Fragment key={item.header}>
+                    <li className="sidebar-header">{item.header}</li>
+                    {this.renderMenu(item.content)}
+                </React.Fragment>
+            )
+        });
+    };
+    renderMenu = (menus) => {
+        return menus.map(menu => {
+            if(!menu.children){
+                return (
+                    <li className="sidebar-item" key={menu.path}>
+                        <a href={menu.path} className="sidebar-link">
+                            <i className="fa fa-home"></i>
+                            <span className="align-middle">{menu.title}</span>
+                        </a>
+                    </li>
+                );
+            }else{
+                return (
+                    <li className="sidebar-item" key={menu.title}>
+                         <span data-toggle="collapse" data-target={'#collapse' + menu.title}
+                               className="sidebar-link" aria-expanded="true">
+                            <i className="fa fa-home"></i>
+                            <span className="align-middle">{menu.title}</span>
+                         </span>
+                        <div className="collapse" id={'collapse' + menu.title} aria-expanded="true">
+                            <ul className="sidebar-dropdown list-unstyled">
+                                {menu.children.map(item => (
+                                    <li className="sidebar-item" key={item.title}>
+                                        <a className="sidebar-link" href={item.path}>
+                                            {item.title}
+                                            {item.isNew &&
+                                            <span size="18"
+                                                  className="sidebar-badge badge badge-primary badge-pill">New</span>}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </li>
+                );
+            }
+        })
+    };
+    render(){
+        const {toggled} = this.props;
+        return (
+            <nav className={toggled?"sidebar": "sidebar toggled"}>
+                <div className="sidebar-content">
+                    <a href="/" className="sidebar-brand">
                         <i className="fa fa-home"></i>
-                        <span className="align-middle">Dashboard</span>
+                        <span className="align-middle">Spark</span>
                     </a>
-                </li>
-                <li className="sidebat-item">
-                    <span data-toggle="collapse" data-target="#collapseExample" className="sidebar-link" aria-expanded="true">
-                        <i className="fa fa-home"></i>
-                        <span className="align-middle">Pages</span>
-                    </span>
-                    <div className="collapse" id="collapseExample" aria-expanded="true">
-                        <ul id="item" className="sidebar-dropdown list-unstyled">
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/settings">Settings </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/clients">Clients
-                                    <span size="18" className="sidebar-badge badge badge-primary badge-pill">New</span>
-                                </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/invoice">Invoice </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/pricing">Pricing </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/tasks">Tasks </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/blank">Blank Page </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li className="sidebar-header">Elements</li>
-                <li className="sidebat-item">
-                    <a href="/dashboard" className="sidebar-link">
-                        <i className="fa fa-home"></i>
-                        <span className="align-middle">Dashboard</span>
-                    </a>
-                </li>
-                <li className="sidebat-item">
-                    <span data-toggle="collapse" data-target="#collapse2" className="sidebar-link" aria-expanded="true">
-                        <i className="fa fa-home"></i>
-                        <span className="align-middle">Pages</span>
-                    </span>
-                    <div className="collapse" id="collapse2" aria-expanded="true">
-                        <ul id="item" className="sidebar-dropdown list-unstyled">
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/settings">Settings </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/clients">Clients
-                                    <span size="18" className="sidebar-badge badge badge-primary badge-pill">New</span>
-                                </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/invoice">Invoice </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/pricing">Pricing </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/tasks">Tasks </a>
-                            </li>
-                            <li className="sidebar-item ">
-                                <a className="sidebar-link" href="/pages/blank">Blank Page </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-    );
-};
+                </div>
+                <div className="sidebar-user">
+                    <img src="/logo192.png"
+                         className="img-fluid rounded-circle mb-2" alt="Linda Miller" />
+                    <div className="font-weight-bold">Linda Miller</div>
+                    <small>Front-end Developer</small>
+                </div>
+                <ul className="sidebar-nav">
+                    {this.renderMenuList(menuList)}
+                </ul>
+            </nav>
+        );
+    }
+}
 
 export default Sidebar;
