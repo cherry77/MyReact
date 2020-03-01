@@ -10,6 +10,9 @@ import 'font-awesome/css/font-awesome.css';
 import Movie from './Movie'
 // import HttpApp from './HttpApp'
 
+
+console.log("SUPERMAN",process.env.REACT_APP_NAME);//这个链接到环境中的变量在运行时被替换为真实值了
+
 ReactDOM.render(
     <BrowserRouter>
         <Movie />
