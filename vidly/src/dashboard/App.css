@@ -1,4 +1,8 @@
 /***************************app**************************/
+body{
+  color: #3e4676;
+  background-color: #f4f7fc;
+}
 #root{
   height: 100%;
 }
@@ -335,6 +339,10 @@
 .breadcrumb-item.active {
   color: #fff;
   font-weight: 500;
+}
+/***************************login**************************/
+.login .card{
+  border: 0;
 }
 
 
