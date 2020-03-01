@@ -304,5 +304,37 @@
 }
 
 /*content*/
+.content {
+  margin-top: 3rem;
+  /*padding: 0 0.5rem;*/
+}
+@media (min-width: 992px){
+  .content {
+    padding: 0 1.5rem;
+  }
+}
+.header {
+  position: relative;
+  margin-bottom: 3rem;
+}
+.header-title {
+  font-size: 1.64063rem;
+  color: #fff;
+}
+.header-subtitle {
+  font-size: 0.9375rem;
+  color: #fff;
+}
+.breadcrumb{
+  background-color: transparent;
+}
+.breadcrumb-item a {
+  color: #dee2e6;
+  font-weight: 400;
+}
+.breadcrumb-item.active {
+  color: #fff;
+  font-weight: 500;
+}
 
 
