@@ -1,9 +1,9 @@
 import React from 'react'
 import menus from './../../config/menuConfig'
 
-const Sidebar = (props) => {
+const Sidebar = ({toggled}) => {
     return (
-        <nav className="sidebar">
+        <nav className={toggled?"sidebar": "sidebar toggled"}>
             <div className="sidebar-content">
                 <a href="/" className="sidebar-brand">
                     <i className="fa fa-home"></i>
