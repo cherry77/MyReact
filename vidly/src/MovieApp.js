@@ -14,7 +14,7 @@ import Logout from "./components/movies/logout";
 import auth from './services/authService'
 import 'react-toastify/dist/ReactToastify.css'
 
-class Movie extends Component{
+class MovieApp extends Component{
     state = {};
     componentDidMount () {
         const user = auth.getCurrentUser();
@@ -45,4 +45,4 @@ class Movie extends Component{
         )
     }
 }
-export default Movie
+export default MovieApp

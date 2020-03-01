@@ -6,16 +6,17 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 
-// import App from './App';
-import Movie from './Movie'
-// import HttpApp from './HttpApp'
+// import App from './CounterApp';
+// import App from './MovieApp'
+// import App from './HttpApp'
+import App from './DashboardApp'
 
 
 console.log("SUPERMAN",process.env.REACT_APP_NAME);//这个链接到环境中的变量在运行时被替换为真实值了
 
 ReactDOM.render(
     <BrowserRouter>
-        <Movie />
+        <App />
     </BrowserRouter>,
     document.getElementById('root')
 );

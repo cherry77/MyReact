@@ -3,7 +3,7 @@ import './App.css';
 import NavBar from './components/counters/navbar'
 import Counters from './components/counters/counters'
 
-class App extends Component {
+class CounterApp extends Component {
     state = {
         counters: [
             {id: 1, value: 0},
@@ -54,4 +54,4 @@ class App extends Component {
 
 }
 
-export default App;
+export default CounterApp;
