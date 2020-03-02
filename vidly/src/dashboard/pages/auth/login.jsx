@@ -1,6 +1,23 @@
 import React, {Component} from 'react'
+import Input from './../../components/common/input'
+import Joi from 'joi-browser'
+import Form from "../../components/common/form";
 
-class Login extends Component{
+class Login extends Form{
+    state = {
+        data: {username: '', password: ''},
+        errors: {}
+    };
+    //定义schema
+    schema = {
+        username: Joi.string().required().email().label('Username'),
+        password: Joi.string().required().label('Password')
+    };
+
+    doSubmit = () => {
+        console.log('Submitted')
+    };
+
     render() {
         return (
             <div className="main login h-100 w-100">
@@ -16,35 +33,18 @@ class Login extends Component{
                                     <div className="card-body">
                                         <div className="m-sm-4">
                                             <div className="text-center">
-                                                <img src="/logo192.png" alt="Linda Miller"
-                                                     className="img-fluid rounded-circle" width="132" height="132"/>
+                                                <img src="/logo192.png"
+                                                     alt="Linda Miller"
+                                                     className="img-fluid rounded-circle"
+                                                     width="132"
+                                                     height="132"/>
                                             </div>
-                                            <form className="">
-                                                <div className="form-group">
-                                                    <label className="">Email</label>
-                                                    <input name="email" placeholder="Enter your email" type="email"
-                                                    className="form-control"/>
-                                                </div>
-                                                <div className="form-group">
-                                                    <label className="">Password</label>
-                                                    <input name="password" placeholder="Enter your password" type="password"
-                                                    className="form-control"/>
-                                                    <small><a href="/auth/reset-password">Forgot password?</a></small>
-                                                </div>
-                                                <div>
-                                                    <div className="custom-checkbox custom-control">
-                                                        <input type="checkbox" id="rememberMe" className="custom-control-input"
-                                                        checked/>
-                                                        <label className="custom-control-label" htmlFor="rememberMe">
-                                                            Remember me next time
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div className="text-right mt-3">
-                                                    <a href="/dashboard">
-                                                        <button className="btn btn-primary">Sign in</button>
-                                                    </a>
-                                                </div>
+                                            <form onSubmit={this.handleSubmit}>
+                                                {this.renderInput("username","Username")}
+                                                {this.renderInput("password","Password", "password")}
+                                                <small><a href="/auth/reset-password">Forgot password?</a></small>
+                                                {this.renderCheckbox("Remember me next time")}
+                                                {this.renderButton("Sign in")}
                                             </form>
                                         </div>
                                     </div>

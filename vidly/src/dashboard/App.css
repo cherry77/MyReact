@@ -341,7 +341,9 @@ body{
   font-weight: 500;
 }
 /***************************login**************************/
-.login .card{
+.login .card,
+.register .card,
+.reset-password .card{
   border: 0;
 }
 

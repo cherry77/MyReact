@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 class ResetPassword extends Component{
     render () {
         return (
-            <div className="main h-100 w-100">
+            <div className="main reset-password h-100 w-100">
                 <div className="h-100 container">
                     <div className="h-100 row">
                         <div className="mx-auto d-table h-100 col-sm-10 col-md-8 col-lg-6">
